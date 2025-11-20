@@ -1,15 +1,17 @@
-# Elysia with Bun runtime
+# Elysia Postgresql starter
 
-## Getting Started
-To get started with this template, simply paste this command into your terminal:
-```bash
-bun create elysia ./elysia-example
-```
+<!--toc:start-->
 
-## Development
-To start the development server run:
-```bash
-bun run dev
-```
+- [Elysia Postgresql starter](#elysia-postgresql-starter)
+  - [Tools](#tools)
+  <!--toc:end-->
 
-Open http://localhost:3000/ with your browser to see the result.
+## Tools
+
+- [x] Elysia
+- [x] Bun
+- [x] Typescript
+- [x] Dirzzle
+- [x] Postgresql
+- [x] Biome
+

@@ -1,0 +1,15 @@
+version: "3"
+
+tasks:
+  dev:
+    cmds:
+      - docker compose up -d
+  stop:
+    cmds:
+      - docker compose stop
+  down:
+    cmds:
+      - docker compose down
+  logs:
+    cmds:
+      - docker compose logs
