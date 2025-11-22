@@ -7,6 +7,7 @@
 		"migration:drop": "bunx --bun drizzle-kit drop",
 		"migration:run": "bunx --bun drizzle-kit migrate",
 		"migration:snapshots": "bunx --bun drizzle-kit up",
+		"lint": "biome check",
 		"cz": "cz"
 	},
 	"dependencies": {

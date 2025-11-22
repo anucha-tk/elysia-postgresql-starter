@@ -1,5 +1,6 @@
 import type { APIError } from "./error";
 
+// biome-ignore lint/suspicious/noExplicitAny: <Error Handler>
 export function handleError({ error, set, code }: any) {
 	switch (code) {
 		case "APIError": {
@@ -17,7 +18,8 @@ export function handleError({ error, set, code }: any) {
 			return {
 				status: 422,
 				message: "Input validation failed",
-				errors: error.all.map((e: any) => ({
+				// biome-ignore lint/suspicious/noExplicitAny: <Elysia validate>
+				errors: error.all.map((e: Record<string, any>) => ({
 					path: e.path,
 					message: e.message,
 				})),
