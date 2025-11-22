@@ -1,0 +1,28 @@
+meta {
+  name: signup
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/signup
+  body: json
+  auth: inherit
+}
+
+params:query {
+  ~asda: asd
+}
+
+body:json {
+  {
+    "name": "admin",
+    "email": "admin@gmail.com",
+    "password": "12345678"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

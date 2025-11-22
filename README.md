@@ -23,6 +23,8 @@
 
 ## Features
 
+- [x] drizzle-typebox
+
 ## Ref
 
 - [https://github.com/remuspoienar/bun-elysia-drizzle-sqlite](https://github.com/remuspoienar/bun-elysia-drizzle-sqlite)

@@ -1,3 +1,5 @@
+import { config } from "../config";
+import { NotFoundResponse } from "../response/ApiResponse";
 import ErrorResponse from "../response/errorResponse";
 
 // biome-ignore lint/suspicious/noExplicitAny: <Error Handler>
@@ -15,10 +17,17 @@ export function handleError({ error, set, code }: any) {
 		).send();
 	}
 
+	if (code === "NOT_FOUND") {
+		return new NotFoundResponse("Not Found Error").send();
+	}
 	// Custom error
 	if (error instanceof ErrorResponse) {
 		set.status = Number(error.code) || 500;
 		return error.send();
+	}
+
+	if (config.app.env === "development") {
+		console.error(error);
 	}
 
 	// Default
