@@ -2,18 +2,19 @@ import { Elysia } from "elysia";
 import { logger } from "elysia-logger";
 import { config } from "./common/config";
 import { db } from "./common/db";
+import { APIError } from "./common/error/error";
+import { handleError } from "./common/error/handler";
+import usersController from "./modules/user/user.controller";
 
 export const app = new Elysia();
 db;
-
 app
 	.get("/", () => ({
 		name: config.app.name,
 		version: config.app.version,
 	}))
-	.onError(({ code, error }) => {
-		if (code === "VALIDATION") return error.message;
-	})
+	.error({ APIError })
+	.onError(handleError)
 	.use(logger())
 	.use(usersController)
 	.listen(config.app.port, () => {
