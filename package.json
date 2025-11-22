@@ -6,9 +6,11 @@
 		"migration:create": "bunx --bun drizzle-kit generate",
 		"migration:drop": "bunx --bun drizzle-kit drop",
 		"migration:run": "bunx --bun drizzle-kit migrate",
-		"migration:snapshots": "bunx --bun drizzle-kit up"
+		"migration:snapshots": "bunx --bun drizzle-kit up",
+		"cz": "cz"
 	},
 	"dependencies": {
+		"@elysiajs/jwt": "^1.4.0",
 		"dotenv": "^17.2.3",
 		"drizzle-orm": "^0.44.7",
 		"elysia": "latest",
@@ -17,10 +19,20 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.6",
+		"@commitlint/cli": "^20.1.0",
+		"@commitlint/config-conventional": "^20.0.0",
 		"@types/pg": "^8.15.6",
 		"bun-types": "latest",
+		"commitizen": "^4.3.1",
+		"cz-conventional-changelog": "^3.3.0",
 		"drizzle-kit": "^0.31.7",
+		"lefthook": "^2.0.4",
 		"tsx": "^4.20.6"
 	},
-	"module": "src/app.js"
+	"module": "src/app.js",
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
 }
