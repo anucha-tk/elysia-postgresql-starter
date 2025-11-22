@@ -1,4 +1,5 @@
 import { Elysia } from "elysia";
+import { logger } from "elysia-logger";
 import { config } from "./common/config";
 import { db } from "./common/db";
 
@@ -10,6 +11,11 @@ app
 		name: config.app.name,
 		version: config.app.version,
 	}))
+	.onError(({ code, error }) => {
+		if (code === "VALIDATION") return error.message;
+	})
+	.use(logger())
+	.use(usersController)
 	.listen(config.app.port, () => {
 		console.log(`Environment: ${config.app.env}`);
 		console.log(

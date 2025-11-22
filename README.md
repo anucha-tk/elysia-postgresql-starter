@@ -15,6 +15,9 @@
 - [x] Dirzzle
 - [x] Postgresql
 - [x] Biome
+- [x] Logger
+- [x] Commitlint
+- [x] Lefthhok
 
 ## Features
 
