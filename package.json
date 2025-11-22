@@ -3,10 +3,6 @@
 	"version": "1.0.1",
 	"scripts": {
 		"dev": "bun run --watch src/app.ts",
-		"migration:create": "bunx --bun drizzle-kit generate",
-		"migration:drop": "bunx --bun drizzle-kit drop",
-		"migration:run": "bunx --bun drizzle-kit migrate",
-		"migration:snapshots": "bunx --bun drizzle-kit up",
 		"lint": "biome check",
 		"cz": "cz"
 	},
@@ -15,6 +11,7 @@
 		"@elysiajs/openapi": "^1.4.11",
 		"dotenv": "^17.2.3",
 		"drizzle-orm": "^0.44.7",
+		"drizzle-typebox": "^0.3.3",
 		"elysia": "latest",
 		"pg": "^8.16.3",
 		"winston": "^3.18.3",

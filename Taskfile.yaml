@@ -13,3 +13,15 @@ tasks:
   logs:
     cmds:
       - docker compose logs
+  migration:create:
+    cmds:
+      - bunx --bun drizzle-kit generate
+  migration:drop:
+    cmds:
+      - bunx --bun drizzle-kit drop
+  migration:run:
+    cmds:
+      - bunx --bun drizzle-kit migrate
+  migration:snapshots:
+    cmds:
+      - bunx --bun drizzle-kit up

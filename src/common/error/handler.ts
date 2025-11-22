@@ -1,4 +1,5 @@
 import { config } from "../config";
+import Logger from "../logger/logger";
 import { NotFoundResponse } from "../response/ApiResponse";
 import ErrorResponse from "../response/errorResponse";
 
@@ -32,5 +33,6 @@ export function handleError({ error, set, code }: any) {
 
 	// Default
 	set.status = 500;
+	Logger.error(`Something error: ${error.message}`);
 	return new ErrorResponse("Internal Server Error", 500).send();
 }
