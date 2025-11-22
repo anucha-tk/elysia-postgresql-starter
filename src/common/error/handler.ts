@@ -1,41 +1,27 @@
-import type { APIError } from "./error";
+import ErrorResponse from "../response/errorResponse";
 
 // biome-ignore lint/suspicious/noExplicitAny: <Error Handler>
 export function handleError({ error, set, code }: any) {
-	switch (code) {
-		case "APIError": {
-			const apiError = error as APIError;
-			set.status = apiError.httpCode;
-			return {
-				status: "error",
-				message: apiError.message,
-				code: apiError.name,
-			};
-		}
-
-		case "VALIDATION": {
-			set.status = 422;
-			return {
-				status: 422,
-				message: "Input validation failed",
-				// biome-ignore lint/suspicious/noExplicitAny: <Elysia validate>
-				errors: error.all.map((e: Record<string, any>) => ({
-					path: e.path,
-					message: e.message,
-				})),
-				errorCode: "VALIDATION_FAILED",
-			};
-		}
-
-		case "NOT_FOUND": {
-			set.status = 404;
-			return { status: "error", message: "Not Found" };
-		}
-
-		default: {
-			set.status = 500;
-			console.error(error);
-			return { status: "error", message: "Internal Server Error" };
-		}
+	if (code === "VALIDATION") {
+		set.status = 422;
+		return new ErrorResponse(
+			"Input validation failed",
+			422,
+			// biome-ignore lint/suspicious/noExplicitAny: <Validation err>
+			error.all.map((e: any) => ({
+				path: e.path,
+				message: e.message,
+			})),
+		).send();
 	}
+
+	// Custom error
+	if (error instanceof ErrorResponse) {
+		set.status = Number(error.code) || 500;
+		return error.send();
+	}
+
+	// Default
+	set.status = 500;
+	return new ErrorResponse("Internal Server Error", 500).send();
 }

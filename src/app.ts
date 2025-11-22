@@ -2,7 +2,6 @@ import { Elysia } from "elysia";
 import { logger } from "elysia-logger";
 import { config } from "./common/config";
 import { db } from "./common/db";
-import { APIError } from "./common/error/error";
 import { handleError } from "./common/error/handler";
 import usersController from "./modules/user/user.controller";
 
@@ -13,7 +12,6 @@ app
 		name: config.app.name,
 		version: config.app.version,
 	}))
-	.error({ APIError })
 	.onError(handleError)
 	.use(logger())
 	.use(usersController)
