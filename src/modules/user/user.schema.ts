@@ -15,11 +15,25 @@ export type UserInsert = Static<typeof userInsert>;
 export type User = Static<typeof userSelect>;
 
 // signup
-export const userResponseSchema = t.Pick(userInsert, [
-	"id",
-	"name",
-	"email",
-	"age",
-]);
-const signupResponseSchema = createResponseSchema(userResponseSchema);
+export const userSignUpResponseSchema = t.Object({
+	id: t.Number(),
+	...t.Pick(userSelect, ["name", "email"]).properties,
+	age: t.Number(),
+	token: t.String(),
+});
+const signupResponseSchema = createResponseSchema(userSignUpResponseSchema);
 export type SignupResponse = Static<typeof signupResponseSchema>;
+
+// Login
+export const userSignInSchema = t.Object({
+	email: t.String({ format: "email" }),
+	password: t.String({ minLength: 8 }),
+});
+export const userSignInResponseSchema = t.Object({
+	id: t.Number(),
+	...t.Pick(userSelect, ["name", "email"]).properties,
+	token: t.String(),
+});
+
+const signInResponseSchema = createResponseSchema(userSignInResponseSchema);
+export type SignInResponse = Static<typeof signInResponseSchema>;

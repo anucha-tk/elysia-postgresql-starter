@@ -2,6 +2,7 @@ import { config } from "../config";
 import Logger from "../logger/logger";
 import { NotFoundResponse } from "../response/ApiResponse";
 import ErrorResponse from "../response/errorResponse";
+import { ApiError } from "./error";
 
 // biome-ignore lint/suspicious/noExplicitAny: <Error Handler>
 export function handleError({ error, set, code }: any) {
@@ -21,6 +22,11 @@ export function handleError({ error, set, code }: any) {
 	if (code === "NOT_FOUND") {
 		return new NotFoundResponse("Not Found Error").send();
 	}
+
+	if (error instanceof ApiError) {
+		return ApiError.handle(error);
+	}
+
 	// Custom error
 	if (error instanceof ErrorResponse) {
 		set.status = Number(error.code) || 500;

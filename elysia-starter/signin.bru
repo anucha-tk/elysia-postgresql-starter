@@ -1,11 +1,11 @@
 meta {
-  name: signup
+  name: signin
   type: http
-  seq: 3
+  seq: 4
 }
 
 post {
-  url: http://localhost:3000/user/sign-up
+  url: http://localhost:3000/user/sign-in
   body: json
   auth: inherit
 }
@@ -16,10 +16,8 @@ params:query {
 
 body:json {
   {
-    "name": "admin",
     "email": "admin@gmail.com",
-    "password": "12345678",
-    "age": 1
+    "password": "12345678"
   }
 }
 

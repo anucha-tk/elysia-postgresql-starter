@@ -1,4 +1,6 @@
+import { eq } from "drizzle-orm";
 import { db } from "../../common/db";
+import { AuthFailureError } from "../../common/error/error";
 import { users } from "./user.model";
 import type { UserInsert } from "./user.schema";
 
@@ -20,5 +22,25 @@ export class UserService {
 		} catch (err) {
 			throw new Error(`UserService.create() failed: ${(err as Error).message}`);
 		}
+	}
+
+	async authenticate(email: string, password: string) {
+		const user = await db
+			.select()
+			.from(users)
+			.where(eq(users.email, email))
+			.limit(1);
+
+		if (!user[0]) {
+			throw new AuthFailureError("Auth Fail");
+		}
+
+		const isMatch = await Bun.password.verify(password, user[0].password);
+
+		if (!isMatch) {
+			throw new AuthFailureError("Auth Fail");
+		}
+
+		return user[0];
 	}
 }
