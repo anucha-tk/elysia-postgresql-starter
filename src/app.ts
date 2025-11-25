@@ -4,8 +4,7 @@ import { config } from "./common/config";
 import { db } from "./common/db";
 import { handleError } from "./common/error/handler";
 import { loggerPlugin } from "./common/logger/loggerPlugin";
-import appController from "./modules/app/app.controller";
-import usersController from "./modules/user/user.public.controller";
+import { routeV1 } from "./routes/v1";
 export const app = new Elysia();
 
 db;
@@ -14,8 +13,7 @@ app
 	.use(openapi())
 	.use(loggerPlugin)
 	.onError(handleError)
-	.use(appController)
-	.use(usersController)
+	.use(routeV1)
 	.listen(config.app.port, () => {
 		console.log(`Environment: ${config.app.env}`);
 		console.log(

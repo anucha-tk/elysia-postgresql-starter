@@ -1,11 +1,11 @@
 meta {
   name: signin
   type: http
-  seq: 4
+  seq: 3
 }
 
 post {
-  url: http://localhost:3000/user/sign-in
+  url: {{url}}/user/sign-in
   body: json
   auth: inherit
 }
@@ -19,6 +19,12 @@ body:json {
     "email": "admin@gmail.com",
     "password": "12345678"
   }
+}
+
+script:post-response {
+  let responseBody = res.getBody();
+  let token = responseBody.data.token
+  bru.setEnvVar("authToken", token);
 }
 
 settings {

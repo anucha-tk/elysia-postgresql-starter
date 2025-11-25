@@ -37,3 +37,13 @@ export const userSignInResponseSchema = t.Object({
 
 const signInResponseSchema = createResponseSchema(userSignInResponseSchema);
 export type SignInResponse = Static<typeof signInResponseSchema>;
+
+// get me
+export const meSchema = t.Object({
+	id: t.Number(),
+	...t.Pick(userSelect, ["name", "email"]).properties,
+	age: t.Number(),
+});
+
+const meResponseSchema = createResponseSchema(meSchema);
+export type MeResponse = Static<typeof meResponseSchema>;

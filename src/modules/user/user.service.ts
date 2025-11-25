@@ -43,4 +43,10 @@ export class UserService {
 
 		return user[0];
 	}
+
+	async find(id: number) {
+		return await db.query.users.findFirst({
+			where: eq(users.id, id),
+		});
+	}
 }
