@@ -1,12 +1,12 @@
 meta {
-  name: signup
+  name: logout
   type: http
-  seq: 3
+  seq: 4
 }
 
 post {
-  url: {{url}}user/sign-up/
-  body: json
+  url: {{url}}user/logout
+  body: none
   auth: inherit
 }
 
@@ -17,7 +17,7 @@ params:query {
 body:json {
   {
     "name": "admin",
-    "email": "admin2@gmail.com",
+    "email": "admin@gmail.com",
     "password": "12345678"
   }
 }
