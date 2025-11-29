@@ -1,6 +1,11 @@
+import { APIError } from "better-auth/api";
 import { config } from "../config";
 import Logger from "../logger/logger";
-import { BadRequestResponse, NotFoundResponse } from "../response/ApiResponse";
+import {
+	AuthFailureResponse,
+	BadRequestResponse,
+	NotFoundResponse,
+} from "../response/ApiResponse";
 import ErrorResponse from "../response/errorResponse";
 import { ApiError } from "./error";
 
@@ -9,6 +14,13 @@ export function handleError({ error, set, code }: any) {
 	if (code === "NOT_FOUND" || error.status === 404) {
 		set.status = 404;
 		return new NotFoundResponse().send();
+	}
+
+	// handle with better-auth
+	if (error instanceof APIError) {
+		set.status = error.statusCode || 500;
+		const errMsg = error.message || "Auth Fail";
+		return new AuthFailureResponse(errMsg).send();
 	}
 
 	if (
