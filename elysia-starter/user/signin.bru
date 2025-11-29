@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{url}}/user/sign-in
+  url: {{url}}user/sign-in
   body: json
   auth: inherit
 }
@@ -16,15 +16,35 @@ params:query {
 
 body:json {
   {
-    "email": "admin@gmail.com",
-    "password": "12345678"
+    "email": "john.doe@example.com",
+    "password": "password1234",
+    "rememberMe": true,
+    "callbackURL": "https://example.com/callback"
   }
 }
 
 script:post-response {
-  let responseBody = res.getBody();
-  let token = responseBody.data.token
-  bru.setEnvVar("authToken", token);
+  function onResponse(res) {
+      const setCookieHeader = res.getHeader('set-cookie');
+      const cookieName = '__Secure-better-auth.session_token'; 
+  
+      if (setCookieHeader) {
+          const sessionCookie = Array.isArray(setCookieHeader)
+              ? setCookieHeader.find(c => c.startsWith(cookieName))
+              : setCookieHeader.startsWith(cookieName) ? setCookieHeader : null;
+          
+          if (sessionCookie) {
+              const tokenValue = sessionCookie.substring(cookieName.length + 1).split(';')[0];
+              bru.setVar("better_auth_session", tokenValue);
+              console.log(`[SUCCESS] Stored Better Auth Session Token: ${tokenValue.substring(0, 10)}...`);
+          } else {
+              console.error(`[ERROR] Cookie '${cookieName}' not found in Set-Cookie headers.`);
+          }
+      } else {
+          console.error("[ERROR] No 'Set-Cookie' header found in response.");
+      }
+  }
+  onResponse(res);
 }
 
 settings {
