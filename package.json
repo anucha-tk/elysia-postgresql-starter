@@ -7,8 +7,9 @@
 		"cz": "cz"
 	},
 	"dependencies": {
-		"@elysiajs/jwt": "^1.4.0",
+		"@elysiajs/cors": "^1.4.0",
 		"@elysiajs/openapi": "^1.4.11",
+		"better-auth": "^1.4.2",
 		"dotenv": "^17.2.3",
 		"drizzle-orm": "^0.44.7",
 		"drizzle-typebox": "^0.3.3",
