@@ -32,7 +32,9 @@ export class ApiResponse<T = any> {
 
 	// Return object instead of sending response (Elysia-friendly)
 	send(set?: { status: number }): object {
-		if (set) set.status = this.status; // set the real HTTP status
+		if (set) {
+			set.status = this.status;
+		}
 		return {
 			_metadata: {
 				timestamp: Date.now(),

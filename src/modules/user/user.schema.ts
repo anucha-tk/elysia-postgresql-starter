@@ -1,49 +1,32 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { type Static, t } from "elysia";
 import { createResponseSchema } from "../../common/response/response.schema";
-import { users } from "./user.model";
 
-// extend validation
-export const userInsert = createInsertSchema(users, {
+// base
+const userSchema = t.Object({
+	id: t.String(),
+	name: t.String(),
 	email: t.String({ format: "email" }),
-	age: t.Optional(t.Nullable(t.Number({ minimum: 0 }))),
+	emailVerified: t.Boolean(),
+	image: t.Optional(t.Nullable(t.String())),
+	createdAt: t.Date(),
+	updatedAt: t.Date(),
 });
 
-export const userSelect = createSelectSchema(users);
-
-export type UserInsert = Static<typeof userInsert>;
-export type User = Static<typeof userSelect>;
-
-// signup
-export const userSignUpResponseSchema = t.Object({
-	id: t.Number(),
-	...t.Pick(userSelect, ["name", "email"]).properties,
-	age: t.Number(),
-	token: t.String(),
-});
-const signupResponseSchema = createResponseSchema(userSignUpResponseSchema);
-export type SignupResponse = Static<typeof signupResponseSchema>;
-
-// Login
-export const userSignInSchema = t.Object({
+// signUp
+export const signUpSchema = t.Object({
+	name: t.String(),
 	email: t.String({ format: "email" }),
-	password: t.String({ minLength: 8 }),
-});
-export const userSignInResponseSchema = t.Object({
-	id: t.Number(),
-	...t.Pick(userSelect, ["name", "email"]).properties,
-	token: t.String(),
+	password: t.String(),
+	image: t.Optional(t.Nullable(t.String())),
 });
 
-const signInResponseSchema = createResponseSchema(userSignInResponseSchema);
+export const signUpResponseSchema = createResponseSchema(userSchema);
+export type SignUpResponse = Static<typeof signUpResponseSchema>;
+
+// signIn
+export const signInSchema = t.Object({
+	email: t.String({ format: "email" }),
+	password: t.String(),
+});
+export const signInResponseSchema = createResponseSchema(userSchema);
 export type SignInResponse = Static<typeof signInResponseSchema>;
-
-// get me
-export const meSchema = t.Object({
-	id: t.Number(),
-	...t.Pick(userSelect, ["name", "email"]).properties,
-	age: t.Number(),
-});
-
-const meResponseSchema = createResponseSchema(meSchema);
-export type MeResponse = Static<typeof meResponseSchema>;

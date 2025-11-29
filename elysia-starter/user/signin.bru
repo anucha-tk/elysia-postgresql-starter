@@ -16,34 +16,39 @@ params:query {
 
 body:json {
   {
-    "email": "john.doe@example.com",
-    "password": "password1234",
-    "rememberMe": true,
-    "callbackURL": "https://example.com/callback"
+    "email": "admin@gmail.com",
+    "password": "12345678"
   }
 }
 
 script:post-response {
   function onResponse(res) {
-      const setCookieHeader = res.getHeader('set-cookie');
-      const cookieName = '__Secure-better-auth.session_token'; 
-  
-      if (setCookieHeader) {
-          const sessionCookie = Array.isArray(setCookieHeader)
-              ? setCookieHeader.find(c => c.startsWith(cookieName))
-              : setCookieHeader.startsWith(cookieName) ? setCookieHeader : null;
+      const setCookieHeader = res.getHeader("set-cookie");
+  //     console.log(">>> setCookieHeader", setCookieHeader);
+      
+      if (setCookieHeader && setCookieHeader.length > 0) {
+          // Extract the cookie value from the first set-cookie header
+          const cookieString = setCookieHeader[0];
           
-          if (sessionCookie) {
-              const tokenValue = sessionCookie.substring(cookieName.length + 1).split(';')[0];
-              bru.setVar("better_auth_session", tokenValue);
-              console.log(`[SUCCESS] Stored Better Auth Session Token: ${tokenValue.substring(0, 10)}...`);
-          } else {
-              console.error(`[ERROR] Cookie '${cookieName}' not found in Set-Cookie headers.`);
-          }
+          // Extract just the session token value (before the semicolon)
+          const sessionToken = cookieString.split(';')[0];
+          
+          // Option 1: Store the full cookie string
+          bru.setVar("session_cookie", cookieString);
+          
+          // Option 2: Store just the token part (better-auth.session_token=VALUE)
+          bru.setVar("session_token", sessionToken);
+          
+          // Option 3: Extract only the token value (without the name)
+          const tokenValue = sessionToken.split('=')[1];
+          bru.setVar("token_value", tokenValue);
+          
+          console.log("✅ Session cookie stored:");
       } else {
-          console.error("[ERROR] No 'Set-Cookie' header found in response.");
+          console.log("❌ No set-cookie header found");
       }
   }
+  
   onResponse(res);
 }
 

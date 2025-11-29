@@ -1,11 +1,23 @@
 import { config } from "../config";
 import Logger from "../logger/logger";
-import { NotFoundResponse } from "../response/ApiResponse";
+import { BadRequestResponse, NotFoundResponse } from "../response/ApiResponse";
 import ErrorResponse from "../response/errorResponse";
 import { ApiError } from "./error";
 
 // biome-ignore lint/suspicious/noExplicitAny: <Error Handler>
 export function handleError({ error, set, code }: any) {
+	if (code === "NOT_FOUND" || error.status === 404) {
+		set.status = 404;
+		return new NotFoundResponse().send();
+	}
+
+	if (
+		error.status === "UNPROCESSABLE_ENTITY" &&
+		error.body.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL"
+	) {
+		set.status = 400;
+		return new BadRequestResponse("Email is already exist").send();
+	}
 	if (code === "VALIDATION") {
 		set.status = 422;
 		return new ErrorResponse(
@@ -19,12 +31,8 @@ export function handleError({ error, set, code }: any) {
 		).send();
 	}
 
-	if (code === "NOT_FOUND") {
-		return new NotFoundResponse("Not Found Error").send();
-	}
-
 	if (error instanceof ApiError) {
-		return ApiError.handle(error);
+		return ApiError.handle(error, set);
 	}
 
 	// Custom error

@@ -5,6 +5,7 @@
 - [Elysia Postgresql starter](#elysia-postgresql-starter)
   - [Tools](#tools)
   - [Features](#features)
+  - [Better-Auth](#better-auth)
   - [Ref](#ref)
 
 ## Tools
@@ -24,6 +25,13 @@
 ## Features
 
 - [x] drizzle-typebox
+- [x] better-auth
+
+## Better-Auth
+
+```bash
+npx @better-auth/cli generate --config ./src/common/auth/auth.ts --output ./src/common/auth/auth-schema.ts
+```
 
 ## Ref
 

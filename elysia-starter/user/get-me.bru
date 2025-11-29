@@ -5,13 +5,9 @@ meta {
 }
 
 get {
-  url: {{url}}auth/get-me
+  url: {{url}}user/me
   body: none
   auth: inherit
-}
-
-headers {
-  ~Authorization: {{authToken}}
 }
 
 settings {

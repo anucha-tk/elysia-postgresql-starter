@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{url}}user/sign-up/dd
+  url: {{url}}user/sign-up/
   body: json
   auth: inherit
 }
@@ -20,6 +20,37 @@ body:json {
     "email": "admin@gmail.com",
     "password": "12345678"
   }
+}
+
+script:post-response {
+  function onResponse(res) {
+      const setCookieHeader = res.getHeader("set-cookie");
+  //     console.log(">>> setCookieHeader", setCookieHeader);
+      
+      if (setCookieHeader && setCookieHeader.length > 0) {
+          // Extract the cookie value from the first set-cookie header
+          const cookieString = setCookieHeader[0];
+          
+          // Extract just the session token value (before the semicolon)
+          const sessionToken = cookieString.split(';')[0];
+          
+          // Option 1: Store the full cookie string
+          bru.setVar("session_cookie", cookieString);
+          
+          // Option 2: Store just the token part (better-auth.session_token=VALUE)
+          bru.setVar("session_token", sessionToken);
+          
+          // Option 3: Extract only the token value (without the name)
+          const tokenValue = sessionToken.split('=')[1];
+          bru.setVar("token_value", tokenValue);
+          
+          console.log("✅ Session cookie stored:");
+      } else {
+          console.log("❌ No set-cookie header found");
+      }
+  }
+  
+  onResponse(res);
 }
 
 settings {
