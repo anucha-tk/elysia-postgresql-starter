@@ -31,7 +31,8 @@ export class ApiResponse<T = any> {
 	) {}
 
 	// Return object instead of sending response (Elysia-friendly)
-	send(): object {
+	send(set?: { status: number }): object {
+		if (set) set.status = this.status; // set the real HTTP status
 		return {
 			_metadata: {
 				timestamp: Date.now(),
@@ -111,7 +112,8 @@ export class AccessTokenErrorResponse extends ApiResponse {
 		);
 	}
 
-	send(): object {
+	send(set?: { status: number }): object {
+		if (set) set.status = this.status;
 		return {
 			...super.send(),
 			instruction: this.instruction,

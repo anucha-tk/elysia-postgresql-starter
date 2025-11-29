@@ -5,7 +5,6 @@ import { config } from "./common/config";
 import { db } from "./common/db";
 import { handleError } from "./common/error/handler";
 import { loggerPlugin } from "./common/logger/loggerPlugin";
-import { NotFoundResponse } from "./common/response/ApiResponse";
 import { routeV1 } from "./routes/v1";
 
 export const app = new Elysia();
@@ -24,10 +23,6 @@ app
 	.use(openapi())
 	.use(loggerPlugin)
 	.onError(handleError)
-	.all("*", ({ set }) => {
-		set.status = 404;
-		return new NotFoundResponse().send();
-	})
 	.use(routeV1)
 	.listen(config.app.port, () => {
 		console.log(`Environment: ${config.app.env}`);

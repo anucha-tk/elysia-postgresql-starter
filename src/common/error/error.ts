@@ -26,24 +26,24 @@ export class ApiError extends Error {
 		super(type);
 	}
 
-	public static handle(err: ApiError): object {
+	public static handle(err: ApiError, set?: { status: number }): object {
 		switch (err.type) {
 			case ErrorType.BAD_TOKEN:
 			case ErrorType.TOKEN_EXPIRED:
 			case ErrorType.UNAUTHORIZED:
-				return new AuthFailureResponse(err.message).send();
+				return new AuthFailureResponse(err.message).send(set);
 			case ErrorType.ACCESS_TOKEN:
-				return new AccessTokenErrorResponse(err.message).send();
+				return new AccessTokenErrorResponse(err.message).send(set);
 			case ErrorType.INTERNAL:
-				return new InternalErrorResponse(err.message).send();
+				return new InternalErrorResponse(err.message).send(set);
 			case ErrorType.NOT_FOUND:
-				return new NotFoundResponse(err.message).send();
+				return new NotFoundResponse(err.message).send(set);
 			case ErrorType.BAD_REQUEST:
-				return new BadRequestResponse(err.message).send();
+				return new BadRequestResponse(err.message).send(set);
 			case ErrorType.FORBIDDEN:
-				return new ForbiddenResponse(err.message).send();
+				return new ForbiddenResponse(err.message).send(set);
 			default:
-				return new InternalErrorResponse(err.message).send();
+				return new InternalErrorResponse(err.message).send(set);
 		}
 	}
 }

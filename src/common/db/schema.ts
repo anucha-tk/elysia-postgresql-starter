@@ -1,1 +1,1 @@
-export * from "../../modules/user/user.model";
+export * from "../../common/auth/auth-schema";
