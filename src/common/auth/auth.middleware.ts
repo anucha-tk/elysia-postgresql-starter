@@ -1,5 +1,3 @@
-// common/auth/auth.middleware.ts (No changes)
-
 import Elysia from "elysia";
 import { AuthFailureError } from "../error/error";
 import { auth } from "./auth";

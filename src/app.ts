@@ -4,6 +4,7 @@ import { Elysia } from "elysia";
 import { config } from "./common/config";
 import { db } from "./common/db";
 import { handleError } from "./common/error/handler";
+import Logger from "./common/logger/logger";
 import { loggerPlugin } from "./common/logger/loggerPlugin";
 import { routeV1 } from "./routes/v1";
 
@@ -25,8 +26,9 @@ app
 	.onError(handleError)
 	.use(routeV1)
 	.listen(config.app.port, () => {
-		console.log(`Environment: ${config.app.env}`);
-		console.log(
+		Logger.info(`Environment: ${config.app.env}`);
+		Logger.info(
 			`Bun (🍔) API Starter is running at ${app.server?.hostname}:${app.server?.port}`,
 		);
+		Logger.info("Openapi: http://localhost:3000/openapi");
 	});

@@ -4,7 +4,10 @@ import Logger from "../logger/logger";
 import {
 	AuthFailureResponse,
 	BadRequestResponse,
+	ForbiddenResponse,
+	InternalErrorResponse,
 	NotFoundResponse,
+	UnprocessableContentResponse,
 } from "../response/ApiResponse";
 import ErrorResponse from "../response/errorResponse";
 import { ApiError } from "./error";
@@ -18,10 +21,23 @@ export function handleError({ error, set, code }: any) {
 
 	// handle with better-auth
 	if (error instanceof APIError) {
-		console.error(error);
-		set.status = error.statusCode || 500;
+		console.log(error);
+		set.status = error.statusCode;
 		const errMsg = error.message || "Auth Fail";
-		return new AuthFailureResponse(errMsg).send();
+		switch (error.statusCode) {
+			case 400:
+				return new BadRequestResponse(errMsg).send();
+			case 401:
+				return new AuthFailureResponse(errMsg).send();
+			case 403:
+				return new ForbiddenResponse(errMsg).send();
+			case 422:
+				return new UnprocessableContentResponse(errMsg).send();
+			default:
+				set.status = 500;
+				Logger.error(`Better-auth error: ${error.message}`);
+				return new InternalErrorResponse(errMsg).send();
+		}
 	}
 
 	if (

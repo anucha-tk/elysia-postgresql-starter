@@ -10,7 +10,9 @@ const userSchema = t.Object({
 	password: t.String(),
 	image: t.Optional(t.Nullable(t.String())),
 	role: t.String(),
+	banned: t.Optional(t.Nullable(t.Boolean())),
 	ban_reason: t.Optional(t.Nullable(t.String())),
+	ban_expires: t.Optional(t.Nullable(t.Date())),
 	createdAt: t.Date(),
 	updatedAt: t.Date(),
 });
