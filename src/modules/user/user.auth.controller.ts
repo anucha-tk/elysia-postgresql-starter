@@ -14,35 +14,25 @@ import {
 	signUpResponseSchema,
 	signUpSchema,
 } from "./user.schema";
+import { UserService } from "./user.service";
+
+const userService = new UserService();
 
 const usersAuthController = new Elysia()
 	.use(loggerPlugin)
 	.post(
 		"/sign-up",
-		async ({ body: { name, email, password, image }, set }) => {
-			const { headers, response } = await auth.api.signUpEmail({
-				body: {
-					name,
-					email,
-					password,
-					image: image || "",
-				},
-				returnHeaders: true,
-			});
-
-			const setCookieHeader = headers.get("set-cookie");
-
-			if (setCookieHeader) {
-				set.headers["set-cookie"] = setCookieHeader;
+		async ({ body, set }) => {
+			const { setCookie, response } = await userService.signUp(body);
+			if (setCookie) {
+				set.headers["set-cookie"] = setCookie;
 			}
-
 			const userData = {
 				...response.user,
 				image: response.user.image || null,
 				createdAt: response.user.createdAt,
 				updatedAt: response.user.updatedAt,
 			};
-
 			return new SuccessResponse(
 				"User created successfully",
 				userData,
@@ -59,18 +49,9 @@ const usersAuthController = new Elysia()
 	.post(
 		"/sign-in",
 		async ({ body: { email, password }, set }) => {
-			const { headers, response } = await auth.api.signInEmail({
-				body: {
-					email,
-					password,
-				},
-				returnHeaders: true,
-			});
-
-			const setCookieHeader = headers.get("set-cookie");
-
-			if (setCookieHeader) {
-				set.headers["set-cookie"] = setCookieHeader;
+			const { setCookie, response } = await userService.singIn(email, password);
+			if (setCookie) {
+				set.headers["set-cookie"] = setCookie;
 			}
 			return new SuccessResponse(
 				"Login successfully",
