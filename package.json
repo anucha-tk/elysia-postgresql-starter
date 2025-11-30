@@ -1,6 +1,6 @@
 {
 	"name": "learn_elysia_postgis",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"scripts": {
 		"dev": "bun run --watch src/app.ts",
 		"lint": "biome check",

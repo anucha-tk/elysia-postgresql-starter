@@ -1,0 +1,23 @@
+meta {
+  name: set-role
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}user/admin/set-role
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userId": "49S0lB3bH6jBXbR23wlJmmA0h6gF9p",
+    "role": "officer"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

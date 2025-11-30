@@ -1,0 +1,16 @@
+meta {
+  name: test-officer
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{url}}user/test-user
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

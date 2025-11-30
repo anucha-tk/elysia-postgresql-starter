@@ -1,4 +1,6 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <Fix any Error> */
+import pkg from "../../../package.json";
+
 export enum StatusCode {
 	SUCCESS = "10000",
 	FAILURE = "10001",
@@ -37,6 +39,7 @@ export class ApiResponse<T = any> {
 		}
 		return {
 			_metadata: {
+				version: pkg.version,
 				timestamp: Date.now(),
 				...this.metadata,
 			},

@@ -1,10 +1,9 @@
 import Elysia from "elysia";
 import { auth } from "../../common/auth/auth";
 import { betterAuth } from "../../common/auth/auth.middleware";
-import {
-	ForbiddenResponse,
-	SuccessResponse,
-} from "../../common/response/ApiResponse";
+import type { Roles } from "../../common/auth/permissions";
+import { BadRequestError, ForbiddenError } from "../../common/error/error";
+import { SuccessResponse } from "../../common/response/ApiResponse";
 import { type SignInResponse, signInResponseSchema } from "./user.schema";
 
 const usersController = new Elysia()
@@ -28,20 +27,23 @@ const usersController = new Elysia()
 	.get(
 		"/test-user",
 		async ({ user }) => {
-			if (!user.role) throw new Error("not have role");
+			if (!user.role) throw new BadRequestError("User not have any role");
 			const res = await auth.api.userHasPermission({
 				body: {
 					userId: user.id,
-					role: user.role as "admin" | "user" | "officer",
+					role: user.role as Roles,
 					permission: { officer: ["update"] },
 				},
 			});
 			if (!res.success) {
-				return new ForbiddenResponse("Authorization Fail").send();
+				throw new ForbiddenError("Authorization Fail");
 			}
 		},
 		{
 			auth: true,
+			detail: {
+				hide: true,
+			},
 		},
 	);
 
