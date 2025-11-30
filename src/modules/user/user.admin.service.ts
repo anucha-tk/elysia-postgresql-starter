@@ -1,20 +1,15 @@
 import { auth } from "../../common/auth/auth";
+import type { Roles } from "../../common/auth/permissions";
 
 class UserAdminService {
-	static async updateRole(
-		headers: any,
-		userId: string,
-		role: "admin" | "user" | "officer",
-	) {
-		console.log("updateRole");
-		const res = await auth.api.setRole({
+	async updateRole(headers: Headers, userId: string, role: Roles) {
+		return await auth.api.setRole({
 			body: {
 				userId,
 				role,
 			},
 			headers,
 		});
-		console.log(res);
 	}
 }
 

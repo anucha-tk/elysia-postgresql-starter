@@ -1,5 +1,6 @@
 import { createAccessControl } from "better-auth/plugins/access";
 import { adminAc, defaultStatements } from "better-auth/plugins/admin/access";
+import { t } from "elysia";
 
 export const statement = {
 	...defaultStatements,
@@ -19,4 +20,11 @@ export const admin = ac.newRole({
 
 export const officer = ac.newRole({
 	officer: ["create", "read", "update", "delete"],
+});
+
+export type Roles = "admin" | "user" | "officer";
+export const rolesSchema = t.Enum({
+	admin: "admin",
+	user: "user",
+	officer: "officer",
 });
