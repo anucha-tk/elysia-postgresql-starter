@@ -8,6 +8,13 @@
       "when": 1764170280387,
       "tag": "0000_lethal_puff_adder",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1764426661752,
+      "tag": "0001_ambiguous_scarlet_witch",
+      "breakpoints": true
     }
   ]
 }

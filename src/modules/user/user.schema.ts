@@ -7,26 +7,30 @@ const userSchema = t.Object({
 	name: t.String(),
 	email: t.String({ format: "email" }),
 	emailVerified: t.Boolean(),
+	password: t.String(),
 	image: t.Optional(t.Nullable(t.String())),
+	role: t.String(),
+	ban_reason: t.Optional(t.Nullable(t.String())),
 	createdAt: t.Date(),
 	updatedAt: t.Date(),
 });
 
 // signUp
-export const signUpSchema = t.Object({
-	name: t.String(),
-	email: t.String({ format: "email" }),
-	password: t.String(),
-	image: t.Optional(t.Nullable(t.String())),
-});
+export const signUpSchema = t.Pick(userSchema, [
+	"email",
+	"password",
+	"name",
+	"image",
+]);
 
-export const signUpResponseSchema = createResponseSchema(userSchema);
+export const signUpResponseSchema = createResponseSchema(
+	t.Omit(userSchema, ["password"]),
+);
 export type SignUpResponse = Static<typeof signUpResponseSchema>;
 
 // signIn
-export const signInSchema = t.Object({
-	email: t.String({ format: "email" }),
-	password: t.String(),
-});
-export const signInResponseSchema = createResponseSchema(userSchema);
+export const signInSchema = t.Pick(userSchema, ["email", "password"]);
+export const signInResponseSchema = createResponseSchema(
+	t.Omit(userSchema, ["password"]),
+);
 export type SignInResponse = Static<typeof signInResponseSchema>;

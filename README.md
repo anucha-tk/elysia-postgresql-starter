@@ -6,6 +6,9 @@
   - [Tools](#tools)
   - [Features](#features)
   - [Better-Auth](#better-auth)
+  - [Drizzle](#drizzle)
+    - [Generate](#generate)
+    - [Migrate](#migrate)
   - [Ref](#ref)
 
 ## Tools
@@ -26,11 +29,26 @@
 
 - [x] drizzle-typebox
 - [x] better-auth
+- [x] Role-base
 
 ## Better-Auth
 
 ```bash
 npx @better-auth/cli generate --config ./src/common/auth/auth.ts --output ./src/common/auth/auth-schema.ts
+```
+
+## Drizzle
+
+### Generate
+
+```bash
+npx drizzle-kit generate
+```
+
+### Migrate
+
+```bash
+npx drizzle-kit migrate
 ```
 
 ## Ref

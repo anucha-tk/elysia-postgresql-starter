@@ -1,4 +1,4 @@
-import Elysia, { t } from "elysia";
+import Elysia from "elysia";
 import { auth } from "../../common/auth/auth";
 import { loggerPlugin } from "../../common/logger/loggerPlugin";
 import { SuccessResponse } from "../../common/response/ApiResponse";
@@ -12,6 +12,7 @@ import {
 	signInResponseSchema,
 	signInSchema,
 	signUpResponseSchema,
+	signUpSchema,
 } from "./user.schema";
 
 const usersAuthController = new Elysia()
@@ -48,12 +49,7 @@ const usersAuthController = new Elysia()
 			).send() as SignUpResponse;
 		},
 		{
-			body: t.Object({
-				name: t.String({ minLength: 1, maxLength: 255 }),
-				email: t.String({ format: "email" }),
-				password: t.String({ minLength: 8, maxLength: 20 }),
-				image: t.Optional(t.Nullable(t.String())),
-			}),
+			body: signUpSchema,
 			response: signUpResponseSchema,
 			detail: {
 				tags: ["Auth"],

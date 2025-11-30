@@ -18,6 +18,7 @@ export function handleError({ error, set, code }: any) {
 
 	// handle with better-auth
 	if (error instanceof APIError) {
+		console.error(error);
 		set.status = error.statusCode || 500;
 		const errMsg = error.message || "Auth Fail";
 		return new AuthFailureResponse(errMsg).send();
